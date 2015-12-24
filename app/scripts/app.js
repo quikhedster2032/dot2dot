@@ -29,6 +29,11 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
+      .when('/play', {
+        templateUrl: 'views/play.html',
+        controller: 'PlayCtrl',
+        controllerAs: 'play'
+      })
       .otherwise({
         redirectTo: '/'
       });

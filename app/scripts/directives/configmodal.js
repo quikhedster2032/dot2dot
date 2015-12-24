@@ -11,7 +11,7 @@ angular.module('dot2dotApp')
     return {
       templateUrl: 'views/configmodal.html',
       restrict: 'E',
-      controller: ['$scope', function($scope) {
+      controller: ['$scope', '$location', function($scope, $location) {
         $scope.p1colors = ['cadetblue', 'tomato'];
         $scope.p2colors = ['limegreen', 'goldenrod'];
 
@@ -24,8 +24,13 @@ angular.module('dot2dotApp')
         $scope.startGame = function() {
           console.log($scope.size, $scope.p1color, $scope.p2color);
 
-          console.log('starting game');
           angular.element('#configModal').modal('hide');
+          var params = {
+            size: $scope.size,
+            p1color: $scope.p1color,
+            p2color: $scope.p2color
+          };
+          $location.path('/play').search(params);
         };
       }]
     };
