@@ -12,11 +12,11 @@ angular.module('dot2dotApp')
       templateUrl: 'views/configmodal.html',
       restrict: 'E',
       controller: ['$scope', '$location', function($scope, $location) {
-        $scope.p1colors = ['cadetblue', 'tomato'];
-        $scope.p2colors = ['limegreen', 'goldenrod'];
+        $scope.p1colors = ['cadetblue', 'tomato', 'blueviolet'];
+        $scope.p2colors = ['limegreen', 'goldenrod', 'darkgray'];
 
         // defaults
-        $scope.size = 4;
+        $scope.size = 5;
         $scope.p1color = $scope.p1colors[0];
         $scope.p2color = $scope.p2colors[0];
 
