@@ -10,6 +10,6 @@
 angular.module('dot2dotApp')
   .controller('MainCtrl', function ($scope) {
       $scope.startGame = function () {
-          console.log ('startGamefunction');
+          angular.element('#configModal').modal('show');
       };
   });
