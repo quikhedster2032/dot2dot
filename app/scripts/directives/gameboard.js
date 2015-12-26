@@ -21,17 +21,36 @@ angular.module('dot2dotApp')
 
         $scope.handleDotClick = function() {
           console.debug('handle dot click', this);
-          var startX = this.attr('cx');
-          var startY = this.attr('cy');
-          var r = this.data('row');
-          var c = this.data('col');
-          var nextDot = $scope.dots[r + 1][c];
-          var endX = nextDot.attr('cx');
-          var endY = nextDot.attr('cy');
-          $scope.svgElement.line(startX, startY, endX, endY).attr({
-            'stroke': 'black',
-            'stroke-width': 2
-          });
+          //var startX = this.attr('cx');
+          //var startY = this.attr('cy');
+          var row = this.data('row');
+          var column = this.data('col');
+		  this.attr('fill', 'red');
+		  if (row !== 0) {
+			var dotAbove = $scope.dots[row - 1][column];
+			dotAbove.attr('fill', 'green');
+		  }
+		  if (row !== $scope.size - 1) {
+			var dotBelow = $scope.dots[row + 1][column];
+			dotBelow.attr('fill', 'green');
+		  }
+		  if (column !== 0) {
+			var dotLeft = $scope.dots[row][column - 1];
+			dotLeft.attr('fill', 'green');
+		  }
+		  if (column !== $scope.size - 1) {
+			var dotRight = $scope.dots[row][column + 1];
+			dotRight.attr('fill', 'green');
+		  }
+		 
+		 
+		 // var nextDot = $scope.dots[row + 1][column];
+         // var endX = nextDot.attr('cx');
+         // var endY = nextDot.attr('cy');
+          //$scope.svgElement.line(startX, startY, endX, endY).attr({
+           // 'stroke': 'black',
+           // 'stroke-width': 2
+          //});
         };
 
         $scope.initializeGameboard = function() {
@@ -39,7 +58,7 @@ angular.module('dot2dotApp')
           var gbsize = 500;
           var gbspace = gbsize / $scope.size;
           var gbmargin = gbspace / 2;
-          var dotsize = 3;
+          var dotsize = 6;
           $scope.dots = [];
           $scope.svgElement = new Snap('#gameboard');
           var s = $scope.svgElement;

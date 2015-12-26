@@ -22,7 +22,7 @@ angular.module('dot2dotApp')
       p1color = 'cadetblue';
     }
 
-    if (p2color === undefined || p2color === undefined) {
+    if (p2color === undefined || p2color === '') {
       console.error('Illegal color for player 2 : [' + p2color + ']');
       p2color = 'limegreen';
     }
