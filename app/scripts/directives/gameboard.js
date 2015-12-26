@@ -19,20 +19,40 @@ angular.module('dot2dotApp')
       controller: ['$scope', '$timeout', '$http', function($scope, $timeout, $http) {
         //console.debug($scope.size, $scope.p1color, $scope.p2color);
 
+        $scope.handleDotClick = function() {
+          console.debug('handle dot click', this);
+          var startX = this.attr('cx');
+          var startY = this.attr('cy');
+          var r = this.data('row');
+          var c = this.data('col');
+          var nextDot = $scope.dots[r + 1][c];
+          var endX = nextDot.attr('cx');
+          var endY = nextDot.attr('cy');
+          $scope.svgElement.line(startX, startY, endX, endY).attr({
+            'stroke': 'black',
+            'stroke-width': 2
+          });
+        };
+
         $scope.initializeGameboard = function() {
           //console.debug('Initializing the gameboard');
           var gbsize = 500;
           var gbspace = gbsize / $scope.size;
           var gbmargin = gbspace / 2;
-          var dotsize = 2;
-          var dots = [];
-          var s = new Snap('#gameboard');
+          var dotsize = 3;
+          $scope.dots = [];
+          $scope.svgElement = new Snap('#gameboard');
+          var s = $scope.svgElement;
           for (var i = 0; i < $scope.size; i += 1) {
             var row = [];
             for (var j = 0; j < $scope.size; j += 1) {
-              row[j] = s.circle((j * gbspace) + gbmargin, (i * gbspace) + gbmargin, dotsize);
+              var dot = s.circle((j * gbspace) + gbmargin, (i * gbspace) + gbmargin, dotsize);
+              dot.data('row', i)
+                .data('col', j)
+                .click($scope.handleDotClick);
+              row[j] = dot;
             }
-            dots.push(row);
+            $scope.dots.push(row);
           }
 
           //console.debug('Gameboard ready!');
