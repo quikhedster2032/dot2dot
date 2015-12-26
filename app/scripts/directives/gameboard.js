@@ -23,26 +23,37 @@ angular.module('dot2dotApp')
           console.debug('handle dot click', this);
           //var startX = this.attr('cx');
           //var startY = this.attr('cy');
-          var row = this.data('row');
-          var column = this.data('col');
-		  this.attr('fill', 'red');
-		  if (row !== 0) {
-			var dotAbove = $scope.dots[row - 1][column];
-			dotAbove.attr('fill', 'green');
+          if ($scope.playerClick === 0) {
+			  var row = this.data('row');
+			  var column = this.data('col');
+			  this.attr('fill', 'red');
+			  if (row !== 0) {
+				var dotAbove = $scope.dots[row - 1][column];
+				dotAbove.attr('fill', 'green');
+			  }
+			  if (row !== $scope.size - 1) {
+				var dotBelow = $scope.dots[row + 1][column];
+				dotBelow.attr('fill', 'green');
+			  }
+			  if (column !== 0) {
+				var dotLeft = $scope.dots[row][column - 1];
+				dotLeft.attr('fill', 'green');
+			  }
+			  if (column !== $scope.size - 1) {
+				var dotRight = $scope.dots[row][column + 1];
+				dotRight.attr('fill', 'green');
+			  }
+			  $scope.playerClick = 1;
+			  
+		  } else {
+			  $scope.playerClick = 0;
+			  for (var ro = 0; ro < $scope.size; ro += 1) {
+				for (var col = 0; col < $scope.size; col += 1) {
+					$scope.dots[ro][col].attr('fill', 'black');
+				}
+			 }
 		  }
-		  if (row !== $scope.size - 1) {
-			var dotBelow = $scope.dots[row + 1][column];
-			dotBelow.attr('fill', 'green');
-		  }
-		  if (column !== 0) {
-			var dotLeft = $scope.dots[row][column - 1];
-			dotLeft.attr('fill', 'green');
-		  }
-		  if (column !== $scope.size - 1) {
-			var dotRight = $scope.dots[row][column + 1];
-			dotRight.attr('fill', 'green');
-		  }
-		 
+		  
 		 
 		 // var nextDot = $scope.dots[row + 1][column];
          // var endX = nextDot.attr('cx');
@@ -55,7 +66,9 @@ angular.module('dot2dotApp')
 
         $scope.initializeGameboard = function() {
           //console.debug('Initializing the gameboard');
-          var gbsize = 500;
+          $scope.playerClick = 0;
+		  $scope.playerTurn = 'p1';
+		  var gbsize = 500;
           var gbspace = gbsize / $scope.size;
           var gbmargin = gbspace / 2;
           var dotsize = 6;
