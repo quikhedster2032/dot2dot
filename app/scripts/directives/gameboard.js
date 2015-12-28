@@ -23,7 +23,7 @@ angular.module('dot2dotApp')
           for (var row = 0; row < $scope.size; row += 1) {
             for (var column = 0; column < $scope.size; column += 1) {
               $scope.dots[row][column].data('isSelectable', false)
-                .attr('fill', 'black');
+                .attr('fill', 'lightgray');
             }
           }
         };
@@ -41,9 +41,10 @@ angular.module('dot2dotApp')
 
         $scope.addLine = function(dot1, dot2) {
           var line = $scope.svgElement.line(dot1.attr('cx'), dot1.attr('cy'), dot2.attr('cx'), dot2.attr('cy'));
+          $scope.svgDotGroup.before(line);
           line.attr({
             'stroke': 'black',
-            'stroke-width': 2
+            'stroke-width': 4
           });
           line.data('dots', [dot1, dot2]);
           $scope.lines.push(line);
@@ -102,13 +103,7 @@ angular.module('dot2dotApp')
 
 			      line = $scope.addLine(this, $scope.playerClick);
 
-			      // Clear the color and isSelectable for all dots
-			      for (var ro = 0; ro < $scope.size; ro += 1) {
-				      for (var col = 0; col < $scope.size; col += 1) {
-					      $scope.dots[ro][col].attr('fill', 'black')
-					        .data('isSelectable', false);
-				      }
-			      }
+			      $scope.clearDotSelectable();
 
 			      // Set the color and isSelectable for the next set of dots
 			      $scope.lines.forEach(function(line) {
@@ -135,6 +130,7 @@ angular.module('dot2dotApp')
           var dotsize = 6;
           $scope.dots = [];
           $scope.svgElement = new Snap('#gameboard');
+          $scope.svgDotGroup = $scope.svgElement.group();
           var s = $scope.svgElement;
           for (i = 0; i < $scope.size; i += 1) {
             var row = [];
@@ -150,6 +146,7 @@ angular.module('dot2dotApp')
                 dot.data('maxLines', 3); // top/bottom/left/right row
               }
               row[j] = dot;
+              $scope.svgDotGroup.add(dot);
             }
             $scope.dots.push(row);
           }
