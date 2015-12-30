@@ -41,8 +41,8 @@ angular.module('dot2dotApp')
 
         $scope.addLine = function(dot1, dot2) {
           var line = $scope.svgElement.line(dot1.attr('cx'), dot1.attr('cy'), dot2.attr('cx'), dot2.attr('cy'));
-         // $scope.svgDotGroup.before(line);
-		  $scope.svgLineGroup.add(line);
+          // $scope.svgDotGroup.before(line);
+		      $scope.svgLineGroup.add(line);
           line.attr({
             'stroke': 'black',
             'stroke-width': 4
@@ -51,23 +51,22 @@ angular.module('dot2dotApp')
           $scope.lines.push(line);
           dot1.data('lineCount', dot1.data('lineCount') + 1);
           dot2.data('lineCount', dot2.data('lineCount') + 1);
-		  for (var s = 0; s < $scope.squares.length; s += 1) {
-			  var square = $scope.squares[s];
-			  var dots = square.dots;
-			  if (dots.indexOf(dot1) !== -1 && dots.indexOf(dot2) !== -1) {
+		      for (var s = 0; s < $scope.squares.length; s += 1) {
+			      var square = $scope.squares[s];
+			      var dots = square.dots;
+			      if (dots.indexOf(dot1) !== -1 && dots.indexOf(dot2) !== -1) {
               square.lineCount += 1;
-			  if (square.lineCount === 4) {
-				  console.log (square.lineCount);
-				  var topLeft = dots[2];
-				  var rect = $scope.svgElement.rect(topLeft.attr('cx'), topLeft.attr('cy'), $scope.gbspace, $scope.gbspace)
-				  .attr({'fill':'yellow'});
-				  $scope.svgLineGroup.before(rect);
-			  }
-			  
+			        if (square.lineCount === 4) {
+				        console.log (square.lineCount);
+				        var topLeft = dots[2];
+				        var rect = $scope.svgElement.rect(topLeft.attr('cx'), topLeft.attr('cy'), $scope.gbspace, $scope.gbspace)
+				          .attr({'fill':'yellow'});
+				        $scope.svgLineGroup.before(rect);
+			        }
             }
-		  }
+		      }
           $scope.svgDotGroup.before(line);
-		  return line;
+		      return line;
         };
 
         $scope.handleDotClick = function() {
@@ -143,14 +142,14 @@ angular.module('dot2dotApp')
 		      $scope.playerTurn = 'p1';
 		      var gbsize = 500;
           var gbspace = gbsize / $scope.size;
-		  $scope.gbspace = gbspace;
+		      $scope.gbspace = gbspace;
           var gbmargin = gbspace / 2;
           var dotsize = 6;
           $scope.dots = [];
-		  $scope.squares = [];
+		      $scope.squares = [];
           $scope.svgElement = new Snap('#gameboard');
           $scope.svgDotGroup = $scope.svgElement.group();
-		  $scope.svgLineGroup = $scope.svgElement.group();
+		      $scope.svgLineGroup = $scope.svgElement.group();
           var s = $scope.svgElement;
           for (i = 0; i < $scope.size; i += 1) {
             var row = [];
@@ -167,21 +166,21 @@ angular.module('dot2dotApp')
               }
               row[j] = dot;
               $scope.svgDotGroup.add(dot);
-			  if (i !== 0) {
-				if (j !== 0) {
-					var square = {};
-					square.dots = [];
-					square.dots.push(dot);
-					square.dots.push($scope.dots[i - 1][j]);
-					square.dots.push($scope.dots[i-1][j-1]);
-					square.dots.push(row[j-1]);
-					square.lineCount = 0;
-				  $scope.squares.push(square);
-				  }
-				}
+			        if (i !== 0) {
+				        if (j !== 0) {
+					        var square = {};
+                  square.dots = [];
+                  square.dots.push(dot);
+                  square.dots.push($scope.dots[i - 1][j]);
+                  square.dots.push($scope.dots[i-1][j-1]);
+                  square.dots.push(row[j-1]);
+                  square.lineCount = 0;
+                  $scope.squares.push(square);
+				        }
+				      }
             }
             $scope.dots.push(row);
-			
+
           }
           // Corner dots
           $scope.dots[0][0].data('maxLines', 2);
