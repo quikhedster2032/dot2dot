@@ -41,7 +41,6 @@ angular.module('dot2dotApp')
 
         $scope.addLine = function(dot1, dot2) {
           var line = $scope.svgElement.line(dot1.attr('cx'), dot1.attr('cy'), dot2.attr('cx'), dot2.attr('cy'));
-          // $scope.svgDotGroup.before(line);
 		      $scope.svgLineGroup.add(line);
           line.attr({
             'stroke': 'black',
@@ -61,11 +60,10 @@ angular.module('dot2dotApp')
 				        var topLeft = dots[2];
 				        var rect = $scope.svgElement.rect(topLeft.attr('cx'), topLeft.attr('cy'), $scope.gbspace, $scope.gbspace)
 				          .attr({'fill':'yellow'});
-				        $scope.svgLineGroup.before(rect);
+				        $scope.svgRectGroup.add(rect);
 			        }
             }
 		      }
-          $scope.svgDotGroup.before(line);
 		      return line;
         };
 
@@ -148,8 +146,11 @@ angular.module('dot2dotApp')
           $scope.dots = [];
 		      $scope.squares = [];
           $scope.svgElement = new Snap('#gameboard');
-          $scope.svgDotGroup = $scope.svgElement.group();
+		      $scope.svgRectGroup = $scope.svgElement.group();
 		      $scope.svgLineGroup = $scope.svgElement.group();
+		      $scope.svgLineGroup.before($scope.svgRectGroup);
+          $scope.svgDotGroup = $scope.svgElement.group();
+          $scope.svgDotGroup.before($scope.svgLineGroup);
           var s = $scope.svgElement;
           for (i = 0; i < $scope.size; i += 1) {
             var row = [];
