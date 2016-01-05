@@ -11,11 +11,7 @@ angular.module('dot2dotApp')
     return {
       template: '<svg id="gameboard" width="500" height="500"></svg>',
       restrict: 'E',
-      scope: {
-        size: '=size',
-        p1color: '=p1color',
-        p2color: '=p2color'
-      },
+      scope: true,
       controller: ['$scope', '$timeout', '$http', function($scope, $timeout, $http) {
         //console.debug($scope.size, $scope.p1color, $scope.p2color);
 
@@ -58,9 +54,17 @@ angular.module('dot2dotApp')
 			        if (square.lineCount === 4) {
 				        console.log (square.lineCount);
 				        var topLeft = dots[2];
-				        var rect = $scope.svgElement.rect(topLeft.attr('cx'), topLeft.attr('cy'), $scope.gbspace, $scope.gbspace)
-				          .attr({'fill':'yellow'});
+				        var rect = $scope.svgElement.rect(topLeft.attr('cx'), topLeft.attr('cy'), $scope.gbspace, $scope.gbspace);
 				        $scope.svgRectGroup.add(rect);
+						if ($scope.playerTurn === 'p1') {
+							$scope.p1.score += 1;
+							rect.attr({'fill':$scope.p1.color});
+						} else {
+							$scope.p2.score += 1;
+							rect.attr({'fill':$scope.p2.color});
+						}
+						$scope.$apply();
+						console.log($scope.p1.score, $scope.p2.score);
 			        }
             }
 		      }
@@ -116,7 +120,13 @@ angular.module('dot2dotApp')
 			      }
 
 			      line = $scope.addLine(this, $scope.playerClick);
-
+				  
+				  if ($scope.playerTurn === 'p1') {
+					  $scope.playerTurn = 'p2';
+				  } else {
+					$scope.playerTurn = 'p1';
+				  }
+					
 			      $scope.clearDotSelectable();
 
 			      // Set the color and isSelectable for the next set of dots

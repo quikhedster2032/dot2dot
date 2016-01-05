@@ -28,8 +28,16 @@ angular.module('dot2dotApp')
     }
 
     $scope.size = size;
-    $scope.p1color = p1color;
-    $scope.p2color = p2color;
+	$scope.p1 = {
+		 color : p1color,
+		 score : 0
+	};
+   $scope.p2 = {
+		 color : p2color,
+		 score : 0
+	};
+	
+	
 
     //console.debug(size, p1color, p2color);
   }]);
