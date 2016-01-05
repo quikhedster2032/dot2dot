@@ -19,7 +19,8 @@ angular.module('dot2dotApp')
           for (var row = 0; row < $scope.size; row += 1) {
             for (var column = 0; column < $scope.size; column += 1) {
               $scope.dots[row][column].data('isSelectable', false)
-                .attr('fill', 'lightgray');
+                .attr('fill', 'lightgray')
+                .attr('r', 5);
             }
           }
         };
@@ -56,15 +57,13 @@ angular.module('dot2dotApp')
 				        var topLeft = dots[2];
 				        var rect = $scope.svgElement.rect(topLeft.attr('cx'), topLeft.attr('cy'), $scope.gbspace, $scope.gbspace);
 				        $scope.svgRectGroup.add(rect);
-						if ($scope.playerTurn === 'p1') {
+						if ($scope.p1.turn) {
 							$scope.p1.score += 1;
 							rect.attr({'fill':$scope.p1.color});
 						} else {
 							$scope.p2.score += 1;
 							rect.attr({'fill':$scope.p2.color});
 						}
-						$scope.$apply();
-						console.log($scope.p1.score, $scope.p2.score);
 			        }
             }
 		      }
@@ -84,11 +83,13 @@ angular.module('dot2dotApp')
             $scope.playerClick = this;
 			      var row = this.data('row');
 			      var column = this.data('col');
-			      this.attr('fill', 'red');
+			      this.attr('fill', 'red')
+			        .attr('r', 5);
 			      if (row !== 0) {
 				      var dotAbove = $scope.dots[row - 1][column];
 				      if ($scope.findLine(this, dotAbove) === null) {
                 dotAbove.attr('fill', 'green')
+                  .attr('r', 15)
                   .data('isSelectable', true);
               }
 			      }
@@ -96,6 +97,7 @@ angular.module('dot2dotApp')
 				      var dotBelow = $scope.dots[row + 1][column];
 				      if ($scope.findLine(this, dotBelow) === null) {
                 dotBelow.attr('fill', 'green')
+                  .attr('r', 15)
                   .data('isSelectable', true);
 				      }
 			      }
@@ -103,6 +105,7 @@ angular.module('dot2dotApp')
 				      var dotLeft = $scope.dots[row][column - 1];
 				      if ($scope.findLine(this, dotLeft) === null) {
                 dotLeft.attr('fill', 'green')
+                  .attr('r', 15)
                   .data('isSelectable', true);
               }
 			      }
@@ -110,6 +113,7 @@ angular.module('dot2dotApp')
 				      var dotRight = $scope.dots[row][column + 1];
 				      if ($scope.findLine(this, dotRight) === null) {
                 dotRight.attr('fill', 'green')
+                  .attr('r', 15)
                   .data('isSelectable', true);
               }
 			      }
@@ -120,13 +124,10 @@ angular.module('dot2dotApp')
 			      }
 
 			      line = $scope.addLine(this, $scope.playerClick);
-				  
-				  if ($scope.playerTurn === 'p1') {
-					  $scope.playerTurn = 'p2';
-				  } else {
-					$scope.playerTurn = 'p1';
-				  }
-					
+
+				  $scope.p1.turn = !$scope.p1.turn;
+				  $scope.p2.turn = !$scope.p2.turn;
+
 			      $scope.clearDotSelectable();
 
 			      // Set the color and isSelectable for the next set of dots
@@ -134,12 +135,14 @@ angular.module('dot2dotApp')
 			        line.data('dots').forEach(function(dot) {
 			          if (dot.data('lineCount') < dot.data('maxLines')) {
 			            dot.attr('fill', 'green')
+			              .attr('r', 15)
                     .data('isSelectable', true);
 			          }
 			        });
 			      });
 
 			      $scope.playerClick = 0;
+						$scope.$apply();
 		      }
         };
 
@@ -147,12 +150,11 @@ angular.module('dot2dotApp')
           //console.debug('Initializing the gameboard');
           var i, j;
           $scope.playerClick = 0;
-		      $scope.playerTurn = 'p1';
 		      var gbsize = 500;
           var gbspace = gbsize / $scope.size;
 		      $scope.gbspace = gbspace;
           var gbmargin = gbspace / 2;
-          var dotsize = 6;
+          var dotsize = 15;
           $scope.dots = [];
 		      $scope.squares = [];
           $scope.svgElement = new Snap('#gameboard');
@@ -183,8 +185,8 @@ angular.module('dot2dotApp')
                   square.dots = [];
                   square.dots.push(dot);
                   square.dots.push($scope.dots[i - 1][j]);
-                  square.dots.push($scope.dots[i-1][j-1]);
-                  square.dots.push(row[j-1]);
+                  square.dots.push($scope.dots[i - 1][j - 1]);
+                  square.dots.push(row[j - 1]);
                   square.lineCount = 0;
                   $scope.squares.push(square);
 				        }

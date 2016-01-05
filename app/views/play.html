@@ -1,3 +1,5 @@
-<div class="col-md-2">Player 1:{{p1.score}} </div>
-<div class="col-md-2">Player 2:{{p2.score}}</div>
+<div class="row">
+  <div class="col-sm-3"><label>Player 1:</label> <span class="badge">{{p1.score}}</span> <span class="glyphicon glyphicon-ok" ng-show="p1.turn"></span></div>
+  <div class="col-sm-3 col-sm-offset-1"><label>Player 2:</label> <span class="badge">{{p2.score}}</span> <span class="glyphicon glyphicon-ok" ng-show="p2.turn"></span></div>
+</div>
 <gameboard></gameboard>
